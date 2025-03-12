@@ -2,9 +2,10 @@
 <html lang="ko">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>실리태번 명령어 한글화 위키</title>
     <style>
+        /* 기존 스타일 유지 */
         :root {
             --primary-color: #4285f4;
             --secondary-color: #2c3e50;
@@ -86,6 +87,8 @@
             color: var(--text-color);
             background-color: var(--background-color);
             transition: all 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .container {
@@ -436,6 +439,7 @@
             font-weight: bold;
             color: var(--primary-color);
             margin-bottom: 8px;
+            word-break: break-all;
         }
 
         .macro-description {
@@ -507,7 +511,7 @@
             border-radius: 3px;
             margin-right: 5px;
             color: var(--monospace-color);
-            word-break: break-all;
+            word-break: break-all;..
         }
 
         .help-content {
@@ -516,15 +520,22 @@
             background-color: var(--help-bg);
             border-left: 3px solid var(--help-border);
             font-size: 0.95em;
+            text-align: left;
+            width: 100%;
+            word-wrap: break-word;
+            white-space: normal;
+            display: block;
+            box-sizing: border-box;
         }
 
         .arguments {
             margin-top: 12px;
             font-size: 0.9em;
             color: var(--text-color);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
         }
 
         .argument {
@@ -535,6 +546,7 @@
             border-radius: 4px;
             margin-bottom: 5px;
             font-size: 0.85em;
+            word-break: break-all;
         }
 
         .optional {
@@ -547,6 +559,10 @@
             font-style: italic;
             color: var(--returns-color);
             font-size: 0.9em;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
         }
 
         .example {
@@ -678,11 +694,12 @@
             border-top: 1px solid var(--border-color);
         }
 
-        /* 모바일 최적화 */
+        /* 모바일 최적화  */
         @media (max-width: 980px) {
             .container {
                 display: block;
-            }
+                width: 100%;
+                overflow-x: hidden; 
 
             .sidebar {
                 width: 100%;
@@ -712,6 +729,7 @@
             body {
                 padding: 0;
                 font-size: 16px;
+                overflow-x: hidden; /* 가로 스크롤 방지 */
             }
 
             .page-header {
@@ -736,6 +754,7 @@
 
             .tabs {
                 margin-bottom: 15px;
+                padding-bottom: 1px; /* 스크롤바 표시 방지를 위한 패딩 */
             }
 
             .tab-button {
@@ -744,41 +763,90 @@
             }
 
             .category-nav {
+                display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
             }
 
             .category-button {
-                font-size: 14px;
-                padding: 8px 10px;
+                font-size: 13px;
+                padding: 8px;
                 text-align: center;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
-            .command-container {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
+        .command-container {
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
             .item {
-                padding: 12px;
+                background-color: var(--card-bg-color);
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                padding: 15px;
+                margin-bottom: 15px;
+                transition: transform 0.2s, box-shadow 0.2s;
+                border-left: 3px solid transparent;
+                border-color: var(--item-border);
+                width: 100%;
+                box-sizing: border-box;
+                display: block;
             }
 
+
             .command-name {
-                font-size: 1em;
-                flex-wrap: wrap;
+                font-size: 1.15em;
+                font-weight: bold;
+                color: var(--primary-color);
+                margin-bottom: 8px;
+                padding-bottom: 5px;
+                border-bottom: 1px solid var(--border-color);
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                text-align: left;
             }
 
             .monospace {
-                font-size: 0.9em;
-                margin-bottom: 5px;
+                font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                background-color: var(--monospace-bg);
+                padding: 2px 6px;
+                border-radius: 3px;
+                margin-right: 5px;
+                color: var(--monospace-color);
                 word-break: break-all;
+                display: inline-block;
             }
 
-            .help-content,
-            .arguments,
-            .returns,
+        .help-content,
+        .example,
+        .arguments,
+        .returns {
+            padding: 8px;
+            font-size: 0.85em;
+            text-align: left;
+        }
+
             .example {
-                font-size: 0.9em;
+                margin-top: 12px;
+                padding: 10px;
+                background-color: var(--example-bg);
+                border-left: 3px solid var(--example-border);
+                font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+/*                white-space: pre-wrap;*/
+                font-size: 0.85em;
+                color: var(--text-color);
+                overflow-x: auto;
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                text-align: left;
             }
 
             .back-to-top {
@@ -818,32 +886,101 @@
                 padding: 10px 15px;
                 position: relative;
                 z-index: 100;
+                width: 100%;
             }
 
             .mobile-title {
                 font-weight: bold;
-                font-size: 1.2rem;
+                font-size: 1.1rem; /* 작은 화면에 맞게 조정 */
+                width: 75%; /* 사이드바 토글 버튼을 위한 공간 확보 */
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            /* 매크로 섹션에 대한 모바일 최적화 */
+            .macro-section {
+                padding: 15px;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+
+            .macro-item {
+                padding: 12px;
+                width: 100%;
+            }
+
+            .macro-name {
+                font-size: 0.95em;
+                word-break: break-all;
+            }
+
+            .macro-description {
+                font-size: 0.85em;
             }
         }
 
         @media (max-width: 600px) {
             .command-container {
                 padding: 0;
+                width: 100%;
             }
 
             .item {
                 border-radius: 6px;
                 margin-bottom: 10px;
+                width: 100%;
             }
 
+            /* 더 작은 화면에서 카테고리 버튼 최적화 */
             .category-nav {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 5px;
             }
 
             .category-button {
                 width: 100%;
                 text-align: center;
+                font-size: 12px;
+                padding: 6px 5px;
+            }
+
+            /* 코드 예제 및 인수 줄바꿈 개선 */
+            .example, .help-content, .arguments {
+                max-width: 100%;
+                word-break: break-word;
+            }
+
+            .help-content,
+            .example,
+            .arguments,
+            .returns {
+                text-indent: 0;
+            }
+
+            .argument {
+                font-size: 0.8em;
+                padding: 3px 5px;
+                margin-right: 4px;
+                margin-bottom: 4px;
+            }
+
+            /* 헤더 타이틀 크기 조정 */
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .macro-title, .category {
+                font-size: 1.2rem;
+            }
+
+            /* 모바일에서 패딩 조정으로 여백 최적화 */
+            .main-content {
+                padding: 8px;
+            }
+
+            .controls-area {
+                padding: 10px 0;
             }
         }
 
@@ -852,6 +989,15 @@
             .sidebar-logo {
                 width: 60px;
                 height: 60px;
+            }
+
+            /* 가로 스크롤 방지 및 줄바꿈 개선 */
+            .monospace, .code, .example, .help-content {
+/*                white-space: pre-wrap;*/
+                word-break: break-word;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
             }
         }
 
@@ -885,6 +1031,17 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-bottom: 15px;
+        }
+
+        /* 터치 최적화를 위한 추가 스타일 */
+        @media (max-width: 480px) {
+            input, button, .category-button, .tab-button, .nav-item {
+                min-height: 36px; /* 더 큰 터치 영역 */
+            }
+
+            .search-box {
+                height: 42px;
+            }
         }
     </style>
 </head>
