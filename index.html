@@ -457,6 +457,8 @@
             margin-bottom: 15px;
             display: flex;
             align-items: center;
+            width: 100%;
+            box-sizing: border-box;
         }
 
             .category::before {
@@ -484,6 +486,8 @@
             transition: transform 0.2s, box-shadow 0.2s;
             border-left: 3px solid transparent;
             border-color: var(--item-border);
+            width: 100%;
+            box-sizing: border-box;
         }
 
             .item:hover {
@@ -668,11 +672,11 @@
             }
         }
 
-        /* 검색 결과 하이라이트 */
+        /* 하이라이트 스타일 강화 */
         .highlight {
-            background-color: var(--highlight-color);
-            padding: 0 2px;
-            border-radius: 2px;
+            background-color: var(--highlight-color) !important;
+            padding: 0 2px !important;
+            border-radius: 2px !important;
         }
 
         /* 결과 없음 메시지 */
@@ -699,7 +703,8 @@
             .container {
                 display: block;
                 width: 100%;
-                overflow-x: hidden; 
+                overflow-x: hidden;
+            }
 
             .sidebar {
                 width: 100%;
@@ -778,23 +783,18 @@
                 text-overflow: ellipsis;
             }
 
-        .command-container {
-            grid-template-columns: 1fr;
-            gap: 15px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+            /* 명령어 컨테이너 스타일 강화 */
+            .command-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                width: 100%;
+                box-sizing: border-box;
+                display: grid;
+            }
 
             .item {
-                background-color: var(--card-bg-color);
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-                padding: 15px;
-                margin-bottom: 15px;
-                transition: transform 0.2s, box-shadow 0.2s;
-                border-left: 3px solid transparent;
-                border-color: var(--item-border);
                 width: 100%;
+                max-width: 100%;
                 box-sizing: border-box;
                 display: block;
             }
@@ -921,6 +921,20 @@
         }
 
         @media (max-width: 600px) {
+
+            .category {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            .item {
+                padding: 12px;
+            }
+
+            .command-name {
+                font-size: 15px;
+            }
+
             .command-container {
                 padding: 0;
                 width: 100%;
@@ -986,6 +1000,53 @@
 
         /* 모바일에서 로고 크기 조정 */
         @media (max-width: 980px) {
+
+            .container {
+                display: block;
+                width: 100%;
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                margin-bottom: 0;
+                padding-bottom: 60px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+                overflow-y: auto;
+            }
+
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+
+            .main-content {
+                margin-left: 0;
+                max-width: 100%;
+                padding: 10px;
+                width: 100%;
+            }
+
+            .command-container {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            /* 결과 없음 메시지 스타일 */
+            .no-results {
+                text-align: center;
+                padding: 20px;
+                color: var(--no-results-color);
+                font-style: italic;
+                width: 100%;
+                display: block;
+            }
+
             .sidebar-logo {
                 width: 60px;
                 height: 60px;
@@ -1003,9 +1064,7 @@
 
         /* 사이드바 토글 버튼 (모바일 전용) */
         .sidebar-toggle {
-            display: none;
-            border: none;
-            outline: none;
+            display: flex !important; /* 모바일에서는 항상 표시 */
         }
 
         /* 모바일 메뉴 관련 */
@@ -1031,6 +1090,41 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-bottom: 15px;
+        }
+
+        /* 모바일 헤더 스타일 */
+        .mobile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            position: relative;
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .mobile-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            width: 75%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 오버레이 스타일 */
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 99;
         }
 
         /* 터치 최적화를 위한 추가 스타일 */
@@ -5416,7 +5510,7 @@
                 </div>
 
                 <div class="footer">
-                    <p>실리태번 매크로 한글화 위키</p>
+                    <p>실리태번 명령어 한글화 위키</p>
                     <p class="copyright">깡갤 대피소 배포</p>
                 </div>
 
@@ -5510,9 +5604,17 @@
             const commandItems = document.querySelectorAll('.item');
             const commandCategories = document.querySelectorAll('.category');
 
+            // 카테고리 버튼 클릭 핸들러 강화
             function setActiveCommandCategory(category) {
-                // 활성화된 버튼 스타일 변경
-                commandCategoryButtons.forEach(btn => {
+                console.log("카테고리 선택: ", category); // 디버깅용
+
+                // 명령어 탭이 아닌 경우, 명령어 탭으로 강제 전환
+                if (!document.getElementById('commands').classList.contains('active')) {
+                    setActiveTab('commands');
+                }
+
+                // 버튼 활성화 상태 업데이트
+                document.querySelectorAll('.category-button, .command-category-link').forEach(btn => {
                     if (btn.getAttribute('data-category') === category) {
                         btn.classList.add('active');
                     } else {
@@ -5520,16 +5622,17 @@
                     }
                 });
 
-                commandCategoryLinks.forEach(link => {
-                    if (link.getAttribute('data-category') === category) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
-                });
-
+                // 현재 카테고리 업데이트
                 currentCommandCategory = category;
+
+                // 필터링 실행
                 filterCommandItems();
+
+                // 모바일에서 사이드바 닫기
+                if (window.innerWidth <= 980) {
+                    document.querySelector('.sidebar').classList.remove('open');
+                    document.querySelector('.mobile-menu-overlay').style.display = 'none';
+                }
             }
 
             let currentCommandCategory = 'all';
@@ -5616,74 +5719,110 @@
                 }
             });
 
-            // 명령어 필터링 함수
-            function filterCommandItems() {
-                let hasVisibleItems = false;
-                let visibleCategories = new Set();
-
-                // 먼저 모든 카테고리 헤더 숨기기
-                commandCategories.forEach(category => {
-                    category.classList.add('hidden');
+            // 검색어 하이라이트 함수
+            function highlightSearchTerm(element, term) {
+                // 기존 하이라이트 제거
+                element.querySelectorAll('.highlight').forEach(el => {
+                    const text = el.textContent;
+                    const textNode = document.createTextNode(text);
+                    el.parentNode.replaceChild(textNode, el);
                 });
 
-                // 아이템 필터링
-                commandItems.forEach(item => {
+                // 새 하이라이트 적용
+                const textNodes = getTextNodesIn(element);
+                const searchRegex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
+
+                textNodes.forEach(node => {
+                    if (node.nodeValue && node.nodeValue.toLowerCase().includes(term.toLowerCase())) {
+                        const fragment = document.createDocumentFragment();
+                        const parts = node.nodeValue.split(searchRegex);
+
+                        parts.forEach((part, i) => {
+                            if (i % 2 === 1) { // 매치된 부분
+                                const mark = document.createElement('span');
+                                mark.className = 'highlight';
+                                mark.style.backgroundColor = 'var(--highlight-color)';
+                                mark.style.padding = '0 2px';
+                                mark.style.borderRadius = '2px';
+                                mark.textContent = part;
+                                fragment.appendChild(mark);
+                            } else {
+                                fragment.appendChild(document.createTextNode(part));
+                            }
+                        });
+
+                        node.parentNode.replaceChild(fragment, node);
+                    }
+                });
+            }
+
+            // 텍스트 노드 찾기 (하이라이트용)
+            function getTextNodesIn(node) {
+                const textNodes = [];
+                if (node.nodeType === 3) {
+                    textNodes.push(node);
+                } else {
+                    const children = node.childNodes;
+                    for (let i = 0; i < children.length; i++) {
+                        textNodes.push(...getTextNodesIn(children[i]));
+                    }
+                }
+                return textNodes;
+            }
+
+            // 명령어 카테고리 필터링 함수 수정
+            function filterCommandItems() {
+                const noItemsMsg = document.querySelector('.no-results');
+                if (noItemsMsg) noItemsMsg.remove();
+
+                let hasVisibleItems = false;
+
+                // 모든 카테고리 숨기기
+                document.querySelectorAll('.category').forEach(category => {
+                    category.style.display = 'none';
+                });
+
+                // 모든 아이템 숨기기
+                document.querySelectorAll('.item').forEach(item => {
+                    item.style.display = 'none';
+                });
+
+                // 필터링 조건에 맞는 아이템만 표시
+                document.querySelectorAll('.item').forEach(item => {
                     const itemCategory = item.getAttribute('data-category');
                     const itemText = item.textContent.toLowerCase();
-                    const commandName = item.querySelector('.command-name').textContent.toLowerCase();
+                    const categoryMatch = (currentCommandCategory === 'all' || itemCategory === currentCommandCategory);
+                    const searchMatch = (!searchQuery || itemText.includes(searchQuery.toLowerCase()));
 
-                    // 카테고리와 검색어 모두 적용하여 필터링
-                    const matchesCategory = currentCommandCategory === 'all' || itemCategory === currentCommandCategory;
-                    const matchesSearch = !searchQuery ||
-                        itemText.includes(searchQuery) ||
-                        commandName.includes(searchQuery);
-
-                    if (matchesCategory && matchesSearch) {
-                        item.classList.remove('hidden');
-                        visibleCategories.add(itemCategory);
+                    if (categoryMatch && searchMatch) {
+                        // 아이템 표시
+                        item.style.display = 'block';
                         hasVisibleItems = true;
 
-                        // 검색어 하이라이트 (검색 쿼리가 있는 경우만)
-                        if (searchQuery) {
-                            // 기존 하이라이트 제거
-                            item.innerHTML = item.innerHTML.replace(/<mark class="highlight">|<\/mark>/g, '');
-
-                            // 검색어 하이라이트 적용
-                            const regex = new RegExp(`(${escapeRegExp(searchQuery)})`, 'gi');
-                            const textNodes = getTextNodes(item);
-
-                            textNodes.forEach(node => {
-                                if (node.nodeValue.toLowerCase().includes(searchQuery)) {
-                                    const newNode = document.createElement('span');
-                                    newNode.innerHTML = node.nodeValue.replace(regex, '<mark class="highlight">$1</mark>');
-                                    node.parentNode.replaceChild(newNode, node);
-                                }
-                            });
+                        // 해당 카테고리 표시
+                        if (itemCategory) {
+                            const categoryElement = document.getElementById(itemCategory);
+                            if (categoryElement) {
+                                categoryElement.style.display = 'block';
+                            }
                         }
-                    } else {
-                        item.classList.add('hidden');
+
+                        // 검색어 하이라이트 (있는 경우)
+                        if (searchQuery) {
+                            highlightSearchTerm(item, searchQuery);
+                        }
                     }
                 });
 
-                // 표시된 아이템이 있는 카테고리만 표시
-                commandCategories.forEach(category => {
-                    const categoryId = category.id;
-                    if (visibleCategories.has(categoryId) && (currentCommandCategory === 'all' || categoryId === currentCommandCategory)) {
-                        category.classList.remove('hidden');
-                    }
-                });
-
-                // 결과가 없을 때 메시지 표시
-                const noResultsMsg = document.querySelector('.no-results');
+                // 결과가 없는 경우 메시지 표시
                 if (!hasVisibleItems) {
-                    if (!noResultsMsg) {
-                        const msg = document.createElement('div');
-                        msg.className = 'no-results';
-                        msg.textContent = '검색 결과가 없습니다.';
-                        document.querySelector('.command-container').appendChild(msg);
-                    }
-                } else if (noResultsMsg) {
-                    noResultsMsg.remove();
+                    const msg = document.createElement('div');
+                    msg.className = 'no-results';
+                    msg.textContent = '검색 결과가 없습니다.';
+                    msg.style.textAlign = 'center';
+                    msg.style.padding = '20px';
+                    msg.style.color = '#999';
+                    document.querySelector('.command-container').appendChild(msg);
                 }
             }
 
@@ -5840,7 +5979,7 @@
                 const mobileHeader = document.createElement('div');
                 mobileHeader.className = 'mobile-header';
                 mobileHeader.innerHTML = `
-                        <div class="mobile-title">실리태번 매크로 한글화 위키</div>
+                        <div class="mobile-title">실리태번 명령어 한글화 위키</div>
                     `;
                 document.querySelector('.main-content').insertBefore(mobileHeader, document.querySelector('.main-content').firstChild);
             }
