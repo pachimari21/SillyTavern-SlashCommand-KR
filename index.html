@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>실리태번 명령어 한글화 위키</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* 기존 스타일 유지 */
         :root {
             --primary-color: #4285f4;
             --secondary-color: #2c3e50;
@@ -292,7 +292,6 @@
             margin-bottom: 20px;
             z-index: 100;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: var(--section-shadow);
         }
 
         .search-box {
@@ -449,6 +448,7 @@
 
         /* 명령어 컨테이너 및 항목 */
         .category {
+            grid-column: 1 / -1;
             padding: 10px 15px;
             background-color: var(--category-bg);
             color: var(--category-text);
@@ -473,7 +473,7 @@
 
         .command-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(620px, 1fr));
             gap: 20px;
         }
 
@@ -515,7 +515,7 @@
             border-radius: 3px;
             margin-right: 5px;
             color: var(--monospace-color);
-            word-break: break-all;..
+            word-break: break-all
         }
 
         .help-content {
@@ -627,7 +627,7 @@
             }
 
             .back-to-top:hover {
-                background-color: #2980b9;
+                background-color: var(--sidebar-active);
                 transform: translateY(-3px);
             }
 
@@ -689,6 +689,7 @@
 
         /* 푸터 */
         .footer {
+            grid-column: 1 / -1;
             text-align: center;
             padding: 15px;
             background-color: var(--footer-bg);
@@ -852,7 +853,7 @@
             .back-to-top {
                 width: 40px;
                 height: 40px;
-                bottom: 15px;
+                bottom: 20px;
                 right: 15px;
             }
 
@@ -1092,6 +1093,129 @@
             margin-bottom: 15px;
         }
 
+        /* --- 기초 가이드 및 소분류용 CSS 추가 --- */
+
+        /* 기초 문법 가이드 박스 */
+            /* --- 기초 문법 가이드 (접기/펼치기 기능 적용) --- */
+            .guide-box {
+                background-color: var(--card-bg-color);
+                border-radius: 8px;
+                margin-bottom: 25px;
+                border-left: 5px solid #f39c12; /* 주황색 포인트 */
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                overflow: hidden; /* 내용이 넘치지 않게 */
+                transition: all 0.3s ease;
+            }
+
+            .guide-header {
+                padding: 15px 20px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background-color: rgba(243, 156, 18, 0.1); /* 헤더에 살짝 배경색 */
+                transition: background-color 0.2s;
+            }
+
+            .guide-header:hover {
+                background-color: rgba(243, 156, 18, 0.2);
+            }
+
+            .guide-title {
+                font-size: 1.1rem;
+                font-weight: bold;
+                color: var(--text-color);
+                display: flex;
+                align-items: center;
+                margin: 0; /* 기존 margin 제거 */
+            }
+
+            .guide-title::before {
+                content: '💡';
+                margin-right: 10px;
+                font-size: 1.2rem;
+            }
+
+            /* 접기/펼치기 화살표 아이콘 */
+            .guide-toggle-icon {
+                font-size: 1.2rem;
+                color: var(--text-color);
+                transition: transform 0.3s ease;
+            }
+
+            /* 펼쳐졌을 때 아이콘 회전 */
+            .guide-box.open .guide-toggle-icon {
+                transform: rotate(180deg);
+            }
+
+            .guide-content-wrapper {
+                max-height: 0; /* 기본적으로 높이 0 (숨김) */
+                overflow: hidden;
+                transition: max-height 0.3s ease-out, padding 0.3s ease;
+            }
+
+            /* 펼쳐졌을 때 스타일 */
+            .guide-box.open .guide-content-wrapper {
+                max-height: 1000px; /* 충분히 큰 값 */
+                padding: 0 20px 20px 20px; /* 펼쳐졌을 때만 패딩 적용 */
+            }
+
+            .guide-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+                padding-top: 15px; /* 헤더와의 간격 */
+            }
+
+            .guide-item {
+                background-color: var(--background-color);
+                padding: 12px;
+                border-radius: 6px;
+                border: 1px solid var(--border-color);
+            }
+
+            .guide-term {
+                font-weight: bold;
+                color: var(--primary-color);
+                margin-bottom: 5px;
+                display: block;
+                font-size: 1.1em;
+            }
+
+            .guide-desc {
+                font-size: 0.9em;
+                color: var(--text-color);
+                margin-bottom: 8px;
+            }
+
+            .guide-ex {
+                font-size: 0.8em;
+                color: var(--monospace-color);
+                background-color: var(--monospace-bg);
+                padding: 4px 8px;
+                border-radius: 4px;
+                display: block;
+                font-family: 'SFMono-Regular', Consolas, monospace;
+            }
+
+        /* LALib 소분류 헤더 (그리드 전체 너비 차지) */
+        .subcategory-header {
+            grid-column: 1 / -1; /* CSS Grid에서 전체 행을 차지하게 함 */
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+        /* 다크모드 대응 */
+        [data-theme="dark"] .subcategory-header {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
         /* 모바일 헤더 스타일 */
         .mobile-header {
             display: flex;
@@ -1130,13 +1254,296 @@
         /* 터치 최적화를 위한 추가 스타일 */
         @media (max-width: 480px) {
             input, button, .category-button, .tab-button, .nav-item {
-                min-height: 36px; /* 더 큰 터치 영역 */
+                min-height: 36px; 
             }
 
             .search-box {
                 height: 42px;
             }
         }
+/* =========================================
+       AI 어시스턴트 통합 스타일 (기존 AI CSS를 지우고 이것만 붙여넣으세요)
+       ========================================= */
+
+    /* 1. 플로팅 버튼 */
+    .ai-chat-btn {
+        position: fixed;
+        bottom: 20px;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+        transition: transform 0.2s;
+        font-weight: bold;
+    }
+    .ai-chat-btn:hover { transform: scale(1.05); }
+
+    /* 2. 메인 컨테이너 */
+    .ai-chat-container {
+        position: fixed;
+        bottom: 90px;
+        width: 350px;
+        height: 700px;
+        background-color: var(--card-bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        z-index: 1001;
+        overflow: hidden;
+        /* 등장/퇴장 및 확대 애니메이션 */
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .ai-chat-container.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(20px); /* 살짝 아래로 내려가며 사라짐 */
+    }
+
+    /* 확대 모드 */
+    .ai-chat-container.expanded {
+        width: 800px;
+        height: 80vh;
+        right: 50%;
+        bottom: 50%;
+        transform: translate(50%, 50%);
+        z-index: 2000;
+    }
+
+    /* 3. 헤더 */
+    .ai-chat-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 15px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0; /* 헤더 크기 고정 */
+    }
+    .header-controls { display: flex; gap: 10px; }
+    .ai-control-btn {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0;
+    }
+
+    /* 4. 설정 영역 (부드러운 접기/펼치기 핵심 수정) */
+    .ai-settings-wrapper {
+        background-color: var(--background-color);
+        /* 레이아웃 */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        
+        /* 초기 상태 (펼쳐짐) */
+        padding: 10px;
+        max-height: 500px; /* 내용물보다 충분히 넉넉하게 */
+        border-bottom: 1px solid var(--border-color);
+        opacity: 1;
+        
+        /* 애니메이션: 높이, 패딩, 투명도, 테두리를 모두 동기화 */
+        overflow: hidden;
+        transition: 
+            max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.3s ease-in-out,
+            border-bottom-width 0.1s linear 0.2s; /* 닫힐 때 테두리는 마지막에 사라짐 */
+    }
+
+    .ai-settings-wrapper.collapsed {
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        opacity: 0;
+        border-bottom-width: 0; /* 테두리 제거 */
+        pointer-events: none;
+    }
+
+    /* 설정 내부 요소들 */
+    .ai-row { display: flex; gap: 5px; align-items: center; }
+    .ai-column { display: flex; flex-direction: column; }
+    .ai-input, .ai-select {
+        padding: 5px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        font-size: 12px;
+        background-color: var(--card-bg-color);
+        color: var(--text-color);
+    }
+    .ai-input { flex: 2; }
+    .ai-select { flex: 1; 
+        min-width: 0;      /* 핵심: 내용이 길어도 부모 영역 내에서 줄어들게 함 */
+        max-width: 100%;   /* 핵심: 부모 너비를 넘지 않도록 제한 */
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+     }
+    
+    .ai-btn-small {
+        padding: 6px 12px;
+        background-color: var(--secondary-color);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+    .ai-btn-small:hover { background-color: var(--sidebar-hover); }
+
+    .ai-slider-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.85em;
+        color: var(--text-color);
+    }
+    .ai-slider { flex: 1; cursor: pointer; accent-color: var(--primary-color); }
+    
+    #ai-delete-model-btn { margin-left: 5px; padding: 6px 8px; background-color: #ff6b6b; }
+    #ai-delete-model-btn.hidden { display: none; }
+    .hidden { display: none !important; }
+
+    /* 5. 채팅 로그 */
+    .ai-chat-log {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        font-size: 0.9em;
+        background-color: #f8f9fa;
+    }
+    [data-theme="dark"] .ai-chat-log { background-color: #1e1e1e; }
+
+    .ai-message {
+        position: relative;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        border-radius: 12px;
+        max-width: 90%;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+    .ai-message.user {
+        background-color: var(--primary-color);
+        color: white;
+        margin-left: auto;
+        border-bottom-right-radius: 2px;
+    }
+    .ai-message.bot {
+        background-color: var(--card-bg-color);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+        margin-right: auto;
+        border-bottom-left-radius: 2px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .msg-copy-btn {
+        position: absolute;
+        top: -10px; right: -5px;
+        background-color: var(--card-bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: 50%; width: 24px; height: 24px;
+        font-size: 12px; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.2s;
+        color: var(--text-color); z-index: 5;
+    }
+    .ai-message:hover .msg-copy-btn { opacity: 1; }
+
+    /* 6. 입력 영역 */
+    .ai-input-area {
+        padding: 10px;
+        background-color: var(--card-bg-color);
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+    .ai-input-text {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        resize: none;
+        min-height: 40px; max-height: 100px;
+        font-family: inherit;
+    }
+    .ai-send-btn {
+        padding: 8px 15px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none; border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* 7. 마크다운 스타일 */
+    .markdown-body { line-height: 1.6; font-size: 0.95em; }
+    .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+        margin-top: 15px; margin-bottom: 8px; font-weight: bold;
+        border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 4px;
+        color: var(--secondary-color);
+    }
+    .markdown-body h1 { font-size: 1.4em; }
+    .markdown-body h2 { font-size: 1.25em; }
+    .markdown-body h3 { font-size: 1.1em; }
+    .markdown-body ul, .markdown-body ol {
+        padding-left: 25px !important; margin: 8px 0 !important; list-style-type: disc;
+    }
+    .markdown-body ol { list-style-type: decimal; }
+    .markdown-body li { margin-bottom: 4px; }
+    .markdown-body strong { font-weight: bold; color: var(--primary-color); }
+    .markdown-body blockquote {
+        border-left: 3px solid var(--primary-color);
+        margin: 10px 0; padding-left: 10px;
+        color: #666; background: rgba(0,0,0,0.03);
+    }
+    [data-theme="dark"] .markdown-body strong { color: #66b3ff; }
+    [data-theme="dark"] .markdown-body blockquote { color: #aaa; background: rgba(255,255,255,0.05); }
+
+    /* 코드 블럭 */
+    .code-wrapper {
+        position: relative; margin: 10px 0;
+        background-color: #282c34; border-radius: 6px; overflow: hidden;
+    }
+    .markdown-body pre {
+        margin: 0; padding: 35px 15px 15px 15px; overflow-x: auto;
+        color: #abb2bf; font-family: 'Consolas', monospace; font-size: 0.9em;
+    }
+    .code-copy-btn {
+        position: absolute; top: 5px; right: 10px;
+        background-color: rgba(255,255,255,0.1); color: #fff;
+        border: none; border-radius: 4px; padding: 4px 8px;
+        font-size: 11px; cursor: pointer;
+    }
+    .code-copy-btn:hover { background-color: rgba(255,255,255,0.2); }
+
+    /* 8. 모바일 최적화 */
+    @media (max-width: 600px) {
+        .ai-chat-container {
+            width: 100% !important; height: 100% !important;
+            bottom: 0 !important; right: 0 !important;
+            border-radius: 0; transform: none !important;
+        }
+        .ai-chat-container.hidden { display: none !important; }
+        #ai-expand-btn { display: none; }
+        .ai-chat-btn { bottom: 20px; }
+    }
     </style>
 </head>
 <body>
@@ -1144,7 +1551,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-container">
-                    <img src="https://files.catbox.moe/5jhrno.png" alt="실리태번 명령어 한글화 위키 로고" class="sidebar-logo">
+                    <img src="https://pub-2588f61be63b43f5923f09a158239eaf.r2.dev/logo.png" alt="실리태번 명령어 한글화 위키 로고" class="sidebar-logo">
                 </div>
                 <div class="sidebar-title">실리태번 명령어 한글화 위키</div>
                 <div class="sidebar-subtitle">깡갤 대피소 배포</div>
@@ -1181,6 +1588,7 @@
                 <div class="nav-item command-category-link" data-category="ui">인터페이스</div>
                 <div class="nav-item command-category-link" data-category="tools">도구 관련</div>
                 <div class="nav-item command-category-link" data-category="db">데이터 관련</div>
+                <div class="nav-item command-category-link" data-category="lalib">LALib 확장</div>
             </div>
         </div>
 
@@ -1191,7 +1599,7 @@
 
         <div class="main-content">
             <div class="controls-area">
-                <input type="text" class="search-box" id="searchInput" placeholder="매크로/명령어 검색...">
+                <input type="text" class="search-box" id="searchInput" placeholder="검색...">
 
                 <div class="tabs">
                     <button class="tab-button active" data-tab="macros">매크로</button>
@@ -1570,6 +1978,41 @@
 
             <!-- 명령어 탭 -->
             <div id="commands" class="tab-content">
+                <div class="guide-box" id="syntaxGuide">
+                    <div class="guide-header" onclick="toggleGuide()">
+                        <h3 class="guide-title">초보자를 위한 실리태번 문법 기초</h3>
+                        <span class="guide-toggle-icon">▼</span>
+                    </div>
+                    <div class="guide-content-wrapper">
+                        <div class="guide-grid">
+                            <div class="guide-item">
+                                <span class="guide-term">/ (슬래시)</span>
+                                <p class="guide-desc">모든 명령어의 시작입니다. 채팅창에 입력하면 명령어가 실행됩니다.</p>
+                                <span class="guide-ex">/echo 안녕</span>
+                            </div>
+                            <div class="guide-item">
+                                <span class="guide-term">key=value (인자)</span>
+                                <p class="guide-desc">명령어의 세부 옵션입니다. 띄어쓰기로 구분합니다.</p>
+                                <span class="guide-ex">/echo color=red 경고!</span>
+                            </div>
+                            <div class="guide-item">
+                                <span class="guide-term">| (파이프)</span>
+                                <p class="guide-desc">앞 명령어의 결과를 뒤 명령어에게 전달합니다. 연결 고리 역할입니다.</p>
+                                <span class="guide-ex">/echo 안녕 | /copy</span>
+                            </div>
+                            <div class="guide-item">
+                                <span class="guide-term">{{var}} (매크로/변수)</span>
+                                <p class="guide-desc">저장된 값을 불러오거나, 현재 상태(이름, 시간 등)를 가져옵니다.</p>
+                                <span class="guide-ex">/echo 내 이름은 {{user}}</span>
+                            </div>
+                            <div class="guide-item">
+                                <span class="guide-term">{: ... :} (클로저)</span>
+                                <p class="guide-desc">여러 명령어를 하나의 덩어리로 묶습니다. 조건문이나 반복문에서 쓰입니다.</p>
+                                <span class="guide-ex">/ife (x==1) {: /echo 정답 :}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div id="category-nav" class="category-nav">
                     <div class="category-button active" data-category="all">모든 명령어</div>
                     <div class="category-button" data-category="basic">기본 명령어</div>
@@ -1581,6 +2024,7 @@
                     <div class="category-button" data-category="ui">인터페이스</div>
                     <div class="category-button" data-category="tools">도구 관련</div>
                     <div class="category-button" data-category="db">데이터 관련</div>
+                    <div class="category-button" data-category="lalib">LALib 확장</div>
                 </div>
 
                 <div class="command-container">
@@ -5507,19 +5951,235 @@
                         </div>
                         <div class="returns">리턴값: 마지막으로 실행된 명령의 결과</div>
                     </div>
-                </div>
 
-                <div class="footer">
+                    <div class="category" id="lalib">LALib 확장 명령어</div>
+
+                    <div class="subcategory-header" data-category="lalib">기본 및 논리 연산</div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/lib-ver</span></div>
+                        <div class="help-content">현재 설치된 LALib의 버전을 반환합니다.</div>
+                        <div class="arguments"></div>
+                        <div class="returns">리턴값: 버전 문자열</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/=</span></div>
+                        <div class="help-content">불리언(참/거짓) 또는 산술 표현식을 평가합니다.<div class="example">예시: /= 1 + 2 * 3</div></div>
+                        <div class="arguments"><span class="argument">expression</span></div>
+                        <div class="returns">리턴값: 평가 결과</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/test</span></div>
+                        <div class="help-content">두 값을 비교합니다. 규칙: gt(>), lt(<), eq(==), neq(!=), in(포함) 등</div>
+                        <div class="arguments"><span class="argument">left</span><span class="argument">rule</span><span class="argument">right</span></div>
+                        <div class="returns">리턴값: boolean</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/and</span> / <span class="monospace">/or</span> / <span class="monospace">/not</span></div>
+                        <div class="help-content">논리 연산자입니다. (그리고, 또는, 부정)</div>
+                        <div class="arguments"><span class="argument multiple">values...</span></div>
+                        <div class="returns">리턴값: boolean</div>
+                    </div>
+
+                    <div class="subcategory-header" data-category="lalib">조건문 및 제어 흐름</div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/ife</span> / <span class="monospace">/elseif</span> / <span class="monospace">/else</span></div>
+                        <div class="help-content">조건이 참이면 클로저를 실행합니다. (If-Else 구조)</div>
+                        <div class="arguments"><span class="argument">expression</span><span class="argument">closure</span></div>
+                        <div class="returns">리턴값: void</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/switch</span> / <span class="monospace">/case</span></div>
+                        <div class="help-content">값에 따라 여러 분기로 나뉩니다.</div>
+                        <div class="arguments"><span class="argument">value</span><span class="argument multiple">cases...</span></div>
+                        <div class="returns">리턴값: 실행 결과</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/whilee</span></div>
+                        <div class="help-content">조건이 참인 동안 반복 실행합니다.</div>
+                        <div class="arguments"><span class="argument">expression</span><span class="argument">closure</span></div>
+                        <div class="returns">리턴값: void</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/try</span> / <span class="monospace">/catch</span></div>
+                        <div class="help-content">에러 발생 시 실행을 중단하지 않고 예외를 처리합니다.</div>
+                        <div class="arguments"><span class="argument">closure</span></div>
+                        <div class="returns">리턴값: void</div>
+                    </div>
+
+                    <div class="subcategory-header" data-category="lalib">리스트(배열) 조작</div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/foreach</span></div>
+                        <div class="help-content">리스트의 각 항목에 대해 명령을 반복합니다.</div>
+                        <div class="arguments"><span class="argument">list</span><span class="argument">closure</span></div>
+                        <div class="returns">리턴값: void</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/map</span></div>
+                        <div class="help-content">리스트 내용을 변환하여 새 리스트를 만듭니다.</div>
+                        <div class="arguments"><span class="argument">list</span><span class="argument">closure</span></div>
+                        <div class="returns">리턴값: 새 리스트</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/filter</span></div>
+                        <div class="help-content">조건에 맞는 항목만 남깁니다.</div>
+                        <div class="arguments"><span class="argument">list</span><span class="argument">closure</span></div>
+                        <div class="returns">리턴값: 필터링된 리스트</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/push</span> / <span class="monospace">/pop</span></div>
+                        <div class="help-content">리스트 끝에 추가하거나(push), 마지막 값을 뺍니다(pop).</div>
+                        <div class="arguments"><span class="argument">varname</span><span class="argument">value</span></div>
+                        <div class="returns">리턴값: 변경된 리스트/값</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/unshift</span> / <span class="monospace">/shift</span></div>
+                        <div class="help-content">리스트 앞에 추가하거나(unshift), 첫 번째 값을 뺍니다(shift).</div>
+                        <div class="arguments"><span class="argument">varname</span><span class="argument">value</span></div>
+                        <div class="returns">리턴값: 변경된 리스트/값</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/slice</span> / <span class="monospace">/splice</span></div>
+                        <div class="help-content">리스트를 자르거나(slice), 중간 내용을 수정합니다(splice).</div>
+                        <div class="arguments"><span class="argument">varname</span><span class="argument">start</span><span class="argument">end</span></div>
+                        <div class="returns">리턴값: 리스트</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/sorte</span> / <span class="monospace">/shuffle</span> / <span class="monospace">/reverse</span></div>
+                        <div class="help-content">정렬(sorte), 섞기(shuffle), 뒤집기(reverse)를 수행합니다.</div>
+                        <div class="arguments"><span class="argument">list</span></div>
+                        <div class="returns">리턴값: 리스트</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/pick</span></div>
+                        <div class="help-content">리스트에서 랜덤으로 항목을 뽑습니다.</div>
+                        <div class="arguments"><span class="argument">list</span><span class="argument optional">items</span></div>
+                        <div class="returns">리턴값: 선택된 값</div>
+                    </div>
+
+                    <div class="subcategory-header" data-category="lalib">데이터 구조 (딕셔너리)</div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/getat</span> / <span class="monospace">/setat</span></div>
+                        <div class="help-content">리스트나 딕셔너리의 특정 위치(Key/Index) 값을 읽거나 씁니다.</div>
+                        <div class="arguments"><span class="argument">index</span><span class="argument">object</span></div>
+                        <div class="returns">리턴값: 값 / 수정된 객체</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/dict</span></div>
+                        <div class="help-content">키-값 쌍의 리스트를 딕셔너리로 변환합니다.</div>
+                        <div class="arguments"><span class="argument">list</span></div>
+                        <div class="returns">리턴값: 딕셔너리</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/keys</span></div>
+                        <div class="help-content">딕셔너리의 키 목록을 가져옵니다.</div>
+                        <div class="arguments"><span class="argument">dictionary</span></div>
+                        <div class="returns">리턴값: 키 리스트</div>
+                    </div>
+
+                    <div class="subcategory-header" data-category="lalib">텍스트 및 정규식</div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/split</span> / <span class="monospace">/join</span></div>
+                        <div class="help-content">문자열을 쪼개거나(split), 리스트를 문자열로 합칩니다(join).</div>
+                        <div class="arguments"><span class="argument">string/list</span><span class="argument">separator</span></div>
+                        <div class="returns">리턴값: 리스트/문자열</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/trim</span></div>
+                        <div class="help-content">문자열 양 끝 공백을 제거합니다.</div>
+                        <div class="arguments"><span class="argument">string</span></div>
+                        <div class="returns">리턴값: 문자열</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/substitute</span></div>
+                        <div class="help-content">텍스트 내의 매크로({{user}} 등)를 실제 값으로 변환합니다.</div>
+                        <div class="arguments"><span class="argument">string</span></div>
+                        <div class="returns">리턴값: 변환된 문자열</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/diff</span></div>
+                        <div class="help-content">두 텍스트의 차이점을 비교합니다.</div>
+                        <div class="arguments"><span class="argument">old</span><span class="argument">new</span></div>
+                        <div class="returns">리턴값: void</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/re-test</span> / <span class="monospace">/re-replace</span> / <span class="monospace">/re-exec</span></div>
+                        <div class="help-content">정규 표현식을 사용하여 검사(test), 교체(replace), 추출(exec)합니다.</div>
+                        <div class="arguments"><span class="argument">regex</span><span class="argument">string</span></div>
+                        <div class="returns">리턴값: boolean / string / list</div>
+                    </div>
+
+                    <div class="subcategory-header" data-category="lalib">웹, 시스템 및 유틸리티</div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/fetch</span></div>
+                        <div class="help-content">URL의 내용을 가져옵니다 (HTTP Request).</div>
+                        <div class="arguments"><span class="argument">url</span></div>
+                        <div class="returns">리턴값: 내용(HTML/Text)</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/dom</span> / <span class="monospace">/$</span> / <span class="monospace">/$$</span></div>
+                        <div class="help-content">HTML 요소를 선택하거나 조작합니다. (스크래핑 등에 사용)</div>
+                        <div class="arguments"><span class="argument">selector</span></div>
+                        <div class="returns">리턴값: 요소 값/조작 결과</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/copy</span> / <span class="monospace">/download</span></div>
+                        <div class="help-content">클립보드 복사 또는 파일로 다운로드합니다.</div>
+                        <div class="arguments"><span class="argument">content</span></div>
+                        <div class="returns">리턴값: void</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/console-log</span></div>
+                        <div class="help-content">브라우저 콘솔(F12)에 로그를 출력합니다. (디버깅용)</div>
+                        <div class="arguments"><span class="argument">value</span></div>
+                        <div class="returns">리턴값: void</div>
+                    </div>
+
+                    <div class="item" data-category="lalib">
+                        <div class="command-name"><span class="monospace">/fireandforget</span></div>
+                        <div class="help-content">명령 완료를 기다리지 않고 백그라운드에서 실행합니다.</div>
+                        <div class="arguments"><span class="argument">closure</span></div>
+                        <div class="returns">리턴값: void</div>
+                    </div>
+            </div>
+    </div>
+                                <div class="footer">
                     <p>실리태번 명령어 한글화 위키</p>
                     <p class="copyright">깡갤 대피소 배포</p>
                 </div>
 
                 <a href="#" class="back-to-top">↑</a>
-            </div>
-    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+        
             // 테마 관련 함수
             const themeToggle = document.getElementById('themeToggle');
             const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
@@ -5720,111 +6380,195 @@
             });
 
             // 검색어 하이라이트 함수
+
             function highlightSearchTerm(element, term) {
-                // 기존 하이라이트 제거
-                element.querySelectorAll('.highlight').forEach(el => {
-                    const text = el.textContent;
-                    const textNode = document.createTextNode(text);
-                    el.parentNode.replaceChild(textNode, el);
-                });
+    // 1. 기존 하이라이트 제거
+    // 이전에 적용된 <span class="highlight"> 태그들을 벗겨냅니다.
+    element.querySelectorAll('.highlight').forEach(el => {
+        const text = el.textContent;
+        const textNode = document.createTextNode(text);
+        el.parentNode.replaceChild(textNode, el);
+    });
 
-                // 새 하이라이트 적용
-                const textNodes = getTextNodesIn(element);
-                const searchRegex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
+    // ★ 중요: 텍스트 노드 정규화
+    // 하이라이트를 제거하면 "텍스트1" + "텍스트2" 처럼 노드가 쪼개져 있을 수 있습니다.
+    // 이를 하나로 합쳐주지 않으면, 쪼개진 경계에 걸친 검색어를 찾지 못합니다.
+    element.normalize(); 
 
-                textNodes.forEach(node => {
-                    if (node.nodeValue && node.nodeValue.toLowerCase().includes(term.toLowerCase())) {
-                        const fragment = document.createDocumentFragment();
-                        const parts = node.nodeValue.split(searchRegex);
+    if (!term) return; // 검색어가 없으면 제거만 하고 종료
 
-                        parts.forEach((part, i) => {
-                            if (i % 2 === 1) { // 매치된 부분
-                                const mark = document.createElement('span');
-                                mark.className = 'highlight';
-                                mark.style.backgroundColor = 'var(--highlight-color)';
-                                mark.style.padding = '0 2px';
-                                mark.style.borderRadius = '2px';
-                                mark.textContent = part;
-                                fragment.appendChild(mark);
-                            } else {
-                                fragment.appendChild(document.createTextNode(part));
-                            }
-                        });
+    // 2. 새 하이라이트 적용
+    const textNodes = getTextNodesIn(element);
+    const searchRegex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
 
-                        node.parentNode.replaceChild(fragment, node);
-                    }
-                });
+    textNodes.forEach(node => {
+        const nodeValue = node.nodeValue;
+        if (nodeValue && nodeValue.toLowerCase().includes(term.toLowerCase())) {
+            const fragment = document.createDocumentFragment();
+            // 정규식으로 텍스트를 분할 (캡처 그룹 포함)
+            const parts = nodeValue.split(searchRegex);
+
+            let found = false;
+            parts.forEach(part => {
+                if (part.toLowerCase() === term.toLowerCase()) {
+                    // 매치된 부분: 하이라이트 스팬 생성
+                    const mark = document.createElement('span');
+                    mark.className = 'highlight';
+                    mark.textContent = part; // 원래 대소문자 유지
+                    fragment.appendChild(mark);
+                    found = true;
+                } else {
+                    // 매치되지 않은 부분: 텍스트 노드 그대로
+                    fragment.appendChild(document.createTextNode(part));
+                }
+            });
+
+            // 원본 텍스트 노드를 새로 만든 fragment(하이라이트 포함)로 교체
+            if (found) {
+                node.parentNode.replaceChild(fragment, node);
             }
+        }
+    });
+}
 
             // 텍스트 노드 찾기 (하이라이트용)
-            function getTextNodesIn(node) {
-                const textNodes = [];
-                if (node.nodeType === 3) {
-                    textNodes.push(node);
+function getTextNodesIn(node) {
+    const textNodes = [];
+    if (node.nodeType === 3) { // Text Node
+        textNodes.push(node);
+    } else {
+        const children = node.childNodes;
+        for (let i = 0; i < children.length; i++) {
+            // script나 style 태그 내부는 무시
+            if (children[i].nodeName !== 'SCRIPT' && children[i].nodeName !== 'STYLE') {
+                textNodes.push(...getTextNodesIn(children[i]));
+            }
+        }
+    }
+    return textNodes;
+}
+
+            // 명령어 카테고리 필터링 함수
+
+            // 기존 filterCommandItems 함수를 이 코드로 교체하세요.
+function filterCommandItems() {
+    // 1. 기존 '결과 없음' 메시지 제거
+    const noItemsMsg = document.querySelector('.no-results');
+    if (noItemsMsg) noItemsMsg.remove();
+
+    let hasVisibleItems = false;
+    const container = document.querySelector('.command-container');
+    const children = Array.from(container.children);
+    
+    // 검색 모드인지 확인
+    let isSearching = !!searchQuery; 
+
+    // 헤더 추적용 변수 (검색 시 매칭된 아이템이 있을 때만 켜주기 위함)
+    let currentMainHeader = null; // .category (예: 기본 명령어)
+    let currentSubHeader = null;  // .subcategory-header (예: 기본 및 논리 연산)
+
+    children.forEach(el => {
+        // [A] 메인 카테고리 헤더 처리 (.category)
+        if (el.classList.contains('category')) {
+            // 현재 탭이 'all'이거나 해당 카테고리 ID와 일치하는지 확인
+            const isVisibleCategory = (currentCommandCategory === 'all' || el.id === currentCommandCategory);
+
+            if (isVisibleCategory) {
+                if (isSearching) {
+                    // 검색 중일 땐 일단 숨기고, 후보로 등록해둠
+                    el.style.display = 'none';
+                    currentMainHeader = el;
                 } else {
-                    const children = node.childNodes;
-                    for (let i = 0; i < children.length; i++) {
-                        textNodes.push(...getTextNodesIn(children[i]));
-                    }
+                    // 검색 중이 아닐 땐 무조건 표시
+                    el.style.display = 'flex';
+                    currentMainHeader = null;
                 }
-                return textNodes;
+            } else {
+                // 카테고리 불일치 시 숨김
+                el.style.display = 'none';
+                currentMainHeader = null;
             }
+            
+            // 메인 카테고리가 바뀌었으므로 서브 헤더 문맥도 초기화
+            currentSubHeader = null;
+        }
 
-            // 명령어 카테고리 필터링 함수 수정
-            function filterCommandItems() {
-                const noItemsMsg = document.querySelector('.no-results');
-                if (noItemsMsg) noItemsMsg.remove();
+        // [B] 서브 카테고리 헤더 처리 (.subcategory-header)
+        else if (el.classList.contains('subcategory-header')) {
+            const headerCategory = el.getAttribute('data-category');
+            const isVisibleCategory = (currentCommandCategory === 'all' || headerCategory === currentCommandCategory);
 
-                let hasVisibleItems = false;
-
-                // 모든 카테고리 숨기기
-                document.querySelectorAll('.category').forEach(category => {
-                    category.style.display = 'none';
-                });
-
-                // 모든 아이템 숨기기
-                document.querySelectorAll('.item').forEach(item => {
-                    item.style.display = 'none';
-                });
-
-                // 필터링 조건에 맞는 아이템만 표시
-                document.querySelectorAll('.item').forEach(item => {
-                    const itemCategory = item.getAttribute('data-category');
-                    const itemText = item.textContent.toLowerCase();
-                    const categoryMatch = (currentCommandCategory === 'all' || itemCategory === currentCommandCategory);
-                    const searchMatch = (!searchQuery || itemText.includes(searchQuery.toLowerCase()));
-
-                    if (categoryMatch && searchMatch) {
-                        // 아이템 표시
-                        item.style.display = 'block';
-                        hasVisibleItems = true;
-
-                        // 해당 카테고리 표시
-                        if (itemCategory) {
-                            const categoryElement = document.getElementById(itemCategory);
-                            if (categoryElement) {
-                                categoryElement.style.display = 'block';
-                            }
-                        }
-
-                        // 검색어 하이라이트 (있는 경우)
-                        if (searchQuery) {
-                            highlightSearchTerm(item, searchQuery);
-                        }
-                    }
-                });
-
-                // 결과가 없는 경우 메시지 표시
-                if (!hasVisibleItems) {
-                    const msg = document.createElement('div');
-                    msg.className = 'no-results';
-                    msg.textContent = '검색 결과가 없습니다.';
-                    msg.style.textAlign = 'center';
-                    msg.style.padding = '20px';
-                    msg.style.color = '#999';
-                    document.querySelector('.command-container').appendChild(msg);
+            if (isVisibleCategory) {
+                if (isSearching) {
+                    // 검색 중일 땐 일단 숨기고, 후보로 등록
+                    el.style.display = 'none';
+                    currentSubHeader = el;
+                } else {
+                    el.style.display = 'block';
+                    currentSubHeader = null;
                 }
+            } else {
+                el.style.display = 'none';
+                currentSubHeader = null;
             }
+        }
+
+        // [C] 아이템 처리 (.item)
+        else if (el.classList.contains('item')) {
+            const itemCategory = el.getAttribute('data-category');
+            const itemText = el.textContent.toLowerCase();
+            
+            // 카테고리 일치 여부
+            const categoryMatch = (currentCommandCategory === 'all' || itemCategory === currentCommandCategory);
+            // 검색어 일치 여부 (검색어가 없으면 true)
+            const searchMatch = (!isSearching || itemText.includes(searchQuery));
+
+            if (categoryMatch && searchMatch) {
+                // 조건 만족 시 아이템 표시
+                el.style.display = 'block';
+                hasVisibleItems = true;
+
+                // 검색 중이라면 하이라이트 적용 및 상위 헤더 표시
+                if (isSearching) {
+                    // 외부 함수 의존성을 없애기 위해 내부 헬퍼 함수 사용
+                    highlightSearchTerm(el, searchQuery);
+                    
+                    // ★ 핵심 수정 사항: 
+                    // 이 아이템이 검색에 걸렸으므로, 감춰뒀던 상위 헤더들을 이제서야 보여줍니다.
+                    if (currentMainHeader) {
+                        currentMainHeader.style.display = 'flex';
+                        // 한 번 켰으면 중복 처리를 막기 위해 null 처리
+                        currentMainHeader = null; 
+                    }
+                    if (currentSubHeader) {
+                        currentSubHeader.style.display = 'block';
+                        currentSubHeader = null;
+                    }
+                } else {
+                     // 검색어가 없을 때는 하이라이트 제거 (필수)
+                     highlightSearchTerm(el, '');
+                }
+            } else {
+                // 조건 불만족 시 숨김
+                el.style.display = 'none';
+                // 숨겨진 아이템에서도 하이라이트 제거
+                highlightSearchTerm(el, ''); 
+            }
+        }
+    });
+
+    // 결과 없음 메시지 추가
+    if (!hasVisibleItems) {
+        const msg = document.createElement('div');
+        msg.className = 'no-results';
+        msg.textContent = '검색 결과가 없습니다.';
+        msg.style.textAlign = 'center';
+        msg.style.padding = '20px';
+        msg.style.color = '#999';
+        msg.style.gridColumn = '1 / -1';
+        container.appendChild(msg);
+    }
+}
 
             // 매크로 필터링 함수
             function filterMacroItems() {
@@ -5983,7 +6727,547 @@
                     `;
                 document.querySelector('.main-content').insertBefore(mobileHeader, document.querySelector('.main-content').firstChild);
             }
+
+/* --- AI 어시스턴트 기능 시작 (v4.0: Multi-Provider Support) --- */
+
+// --- 1. Markdown 설정 ---
+function initMarkdown() {
+    if (typeof marked !== 'undefined') {
+        const renderer = new marked.Renderer();
+        renderer.code = function(code, language) {
+            const validLang = !!(language && hljs && hljs.getLanguage(language)) ? language : '';
+            const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            return `<div class="code-wrapper"><button class="code-copy-btn" onclick="copyCode(this)">Copy</button><pre><code class="${validLang}">${escapedCode}</code></pre></div>`;
+        };
+        marked.setOptions({ renderer: renderer, breaks: true, gfm: true });
+        return true;
+    }
+    return false;
+}
+initMarkdown();
+
+// --- 2. 위키 데이터 추출 ---
+function getWikiContext() {
+    let contextText = "다음은 SillyTavern의 명령어 및 매크로 목록입니다. 이 정보를 바탕으로 사용자의 질문에 한국어로 답변하세요.\n\n[명령어 목록]\n";
+    document.querySelectorAll('.item').forEach(item => {
+        if(item.offsetParent === null) return;
+        const name = item.querySelector('.command-name').innerText.replace(/\s+/g, ' ').trim();
+        const desc = item.querySelector('.help-content').innerText.replace(/\s+/g, ' ').trim();
+        contextText += `- ${name}: ${desc.substring(0, 300)}\n`;
+    });
+    return contextText;
+}
+
+// --- 3. 기본 모델 데이터 ---
+const PROVIDERS = {
+    openai: {
+        name: "OpenAI",
+        endpoint: "https://api.openai.com/v1",
+        models: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-3.5-turbo"]
+    },
+    anthropic: {
+        name: "Anthropic",
+        endpoint: "https://api.anthropic.com/v1",
+        models: ["claude-3-5-sonnet-latest", "claude-3-5-haiku-latest", "claude-3-opus-latest"]
+    },
+    google: {
+        name: "Google Gemini",
+        endpoint: "https://generativelanguage.googleapis.com/v1beta/models",
+        models: ["gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash","gemini-2.0-flash","gemini-2.5-flash","gemini-2.5-flash-lite","gemini-2.5-pro","gemini-3-pro-preview"]
+    },
+    cohere: {
+        name: "Cohere",
+        endpoint: "https://api.cohere.ai/v1",
+        models: ["command-r-plus-08-2024", "command-r-plus", "command-r-08-2024", "command-r"]
+    },
+    custom: {
+        name: "Custom (OpenAI Compatible)",
+        endpoint: "", // 사용자 입력
+        models: [] // 로컬스토리지에서 로드
+    }
+};
+
+// --- 4. UI 요소 참조 ---
+const els = {
+    toggleBtn: document.getElementById('ai-chat-toggle'),
+    container: document.getElementById('ai-chat-container'),
+    closeBtn: document.getElementById('ai-chat-close'),
+    expandBtn: document.getElementById('ai-expand-btn'),
+    settingsToggle: document.getElementById('ai-settings-toggle'),
+    settingsWrapper: document.getElementById('ai-settings-wrapper'),
+    
+    // Inputs
+    apiKeyInput: document.getElementById('ai-api-key'),
+    saveKeyBtn: document.getElementById('ai-save-key-btn'),
+    
+    // Selects
+    providerSelect: null, // 동적 생성할 것임
+    modelSelect: document.getElementById('ai-model-select'),
+    
+    // Custom Model UI
+    customModelGroup: document.getElementById('ai-custom-models-group'), // 기존 그룹 활용 안함, 동적 처리
+    customModelRow: document.getElementById('custom-model-row'),
+    toggleCustomModelLink: document.getElementById('toggle-custom-model'),
+    customModelName: document.getElementById('ai-custom-model-name'),
+    customEndpoint: document.getElementById('ai-custom-endpoint'),
+    addModelBtn: document.getElementById('ai-add-model-btn'),
+    deleteModelBtn: document.getElementById('ai-delete-model-btn'),
+
+    // Chat
+    userInput: document.getElementById('ai-user-input'),
+    sendBtn: document.getElementById('ai-send-btn'),
+    chatLog: document.getElementById('ai-chat-log'),
+    tokenSlider: document.getElementById('ai-token-slider'),
+    tokenValue: document.getElementById('ai-token-value')
+};
+
+// --- 5. UI 초기화 및 공급자 선택 생성 ---
+function initUI() {
+    // 1. 공급자 선택 Select 박스 생성 (기존 Model Select 앞에 삽입)
+    if (!document.getElementById('ai-provider-select')) {
+        const providerSelect = document.createElement('select');
+        providerSelect.id = 'ai-provider-select';
+        providerSelect.className = 'ai-select';
+        providerSelect.style.marginRight = '5px';
+        providerSelect.style.flex = '1';
+        
+        // 옵션 추가
+        for (const [key, val] of Object.entries(PROVIDERS)) {
+            const opt = document.createElement('option');
+            opt.value = key;
+            opt.text = val.name;
+            providerSelect.appendChild(opt);
+        }
+        
+        // DOM 삽입
+        const modelRow = els.modelSelect.parentNode;
+        modelRow.insertBefore(providerSelect, els.modelSelect);
+        els.providerSelect = providerSelect;
+        
+        // 모델 Select 스타일 조정
+        els.modelSelect.style.flex = '2';
+    } else {
+        els.providerSelect = document.getElementById('ai-provider-select');
+    }
+
+    // 2. 이벤트 리스너 연결
+    els.providerSelect.addEventListener('change', () => {
+        populateModelOptions();
+        updateCustomUIState();
+        localStorage.setItem('ai_provider', els.providerSelect.value);
+    });
+
+    els.modelSelect.addEventListener('change', () => {
+        localStorage.setItem('ai_selected_model', els.modelSelect.value);
+    });
+
+    els.toggleCustomModelLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        els.customModelRow.classList.toggle('hidden');
+    });
+
+    // 설정 로드
+    loadSettings();
+}
+
+// 모델 목록 채우기
+function populateModelOptions() {
+    const providerKey = els.providerSelect.value;
+    const providerData = PROVIDERS[providerKey];
+    els.modelSelect.innerHTML = ''; // 초기화
+
+    let modelsToShow = [];
+
+    if (providerKey === 'custom') {
+        // 커스텀인 경우 로컬스토리지에서 로드
+        const savedCustoms = JSON.parse(localStorage.getItem('ai_custom_models_v2') || '[]');
+        modelsToShow = savedCustoms.map(m => ({ value: m.name, text: m.name + (m.endpoint ? ' (Custom URL)' : ''), endpoint: m.endpoint }));
+        
+        if (modelsToShow.length === 0) {
+            const opt = document.createElement('option');
+            opt.text = "-- 모델을 추가해주세요 --";
+            els.modelSelect.appendChild(opt);
+        }
+    } else {
+        // 기본 제공 모델
+        modelsToShow = providerData.models.map(m => ({ value: m, text: m, endpoint: '' }));
+    }
+
+    modelsToShow.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m.value;
+        opt.text = m.text;
+        if(m.endpoint) opt.setAttribute('data-endpoint', m.endpoint);
+        els.modelSelect.appendChild(opt);
+    });
+
+    // 이전에 선택한 모델 복원 시도
+    const savedModel = localStorage.getItem('ai_selected_model');
+    if (savedModel && [...els.modelSelect.options].some(o => o.value === savedModel)) {
+        els.modelSelect.value = savedModel;
+    }
+}
+
+// 커스텀 UI (추가/삭제 버튼) 상태 업데이트
+function updateCustomUIState() {
+    const isCustom = els.providerSelect.value === 'custom';
+    
+    // 1. 커스텀 모델 추가 링크 표시 여부
+    if (isCustom) {
+        els.toggleCustomModelLink.style.display = 'block';
+        els.deleteModelBtn.classList.remove('hidden');
+    } else {
+        els.toggleCustomModelLink.style.display = 'none';
+        els.customModelRow.classList.add('hidden');
+        els.deleteModelBtn.classList.add('hidden');
+    }
+}
+
+// 설정 로드
+function loadSettings() {
+    if(localStorage.getItem('ai_api_key')) els.apiKeyInput.value = localStorage.getItem('ai_api_key');
+    if(localStorage.getItem('ai_token_limit')) {
+        els.tokenSlider.value = localStorage.getItem('ai_token_limit');
+        els.tokenValue.innerText = els.tokenSlider.value;
+    }
+
+    // 공급자 복원
+    const savedProvider = localStorage.getItem('ai_provider');
+    if (savedProvider && PROVIDERS[savedProvider]) {
+        els.providerSelect.value = savedProvider;
+    } else {
+        els.providerSelect.value = 'openai'; // 기본값
+    }
+
+    // 모델 목록 및 UI 갱신
+    populateModelOptions();
+    updateCustomUIState();
+}
+
+// --- 6. 커스텀 모델 관리 로직 ---
+els.addModelBtn.addEventListener('click', () => {
+    const name = els.customModelName.value.trim();
+    let endpoint = els.customEndpoint.value.trim();
+    
+    if (endpoint && endpoint.endsWith('/')) endpoint = endpoint.slice(0, -1);
+    if (endpoint && endpoint.endsWith('/chat/completions')) endpoint = endpoint.replace('/chat/completions', '');
+
+    if (name) {
+        let currentModels = JSON.parse(localStorage.getItem('ai_custom_models_v2') || '[]');
+        if (currentModels.some(m => m.name === name)) {
+            alert('이미 존재하는 모델 이름입니다.');
+            return;
+        }
+
+        currentModels.push({ name, endpoint });
+        localStorage.setItem('ai_custom_models_v2', JSON.stringify(currentModels));
+
+        // UI 갱신 (현재 공급자가 Custom일 때만)
+        if (els.providerSelect.value === 'custom') {
+            populateModelOptions();
+            els.modelSelect.value = name;
+            localStorage.setItem('ai_selected_model', name);
+        }
+
+        els.customModelName.value = '';
+        els.customEndpoint.value = '';
+        els.customModelRow.classList.add('hidden');
+        alert(`모델 '${name}'이 추가되었습니다.`);
+    }
+});
+
+els.deleteModelBtn.addEventListener('click', () => {
+    if (els.providerSelect.value !== 'custom') return;
+    
+    const selectedVal = els.modelSelect.value;
+    if (!selectedVal || selectedVal.startsWith('--')) return;
+
+    if (!confirm(`정말 모델 '${selectedVal}'을(를) 삭제하시겠습니까?`)) return;
+
+    let currentModels = JSON.parse(localStorage.getItem('ai_custom_models_v2') || '[]');
+    const newModels = currentModels.filter(m => m.name !== selectedVal);
+    localStorage.setItem('ai_custom_models_v2', JSON.stringify(newModels));
+
+    populateModelOptions();
+    alert('삭제되었습니다.');
+});
+
+// --- 7. 채팅 전송 로직 (공급자별 분기) ---
+async function sendMessage() {
+    const question = els.userInput.value.trim();
+    const apiKey = els.apiKeyInput.value.trim();
+    const providerKey = els.providerSelect.value;
+    const modelName = els.modelSelect.value;
+    const maxTokens = parseInt(els.tokenSlider.value);
+    const systemContext = getWikiContext();
+
+    if (!question) return;
+    
+    // Custom 공급자가 아닌데 모델이 없으면 에러
+    if (providerKey !== 'custom' && !modelName) return;
+
+    // Custom 공급자의 커스텀 URL 확인
+    let customUrl = "";
+    if (providerKey === 'custom') {
+        const selectedOpt = els.modelSelect.options[els.modelSelect.selectedIndex];
+        customUrl = selectedOpt ? selectedOpt.getAttribute('data-endpoint') : "";
+    }
+
+    // API 키 필수 체크 (Custom이면서 URL이 있는 경우 제외 가능할 수도 있지만 보통 필요)
+    if (!apiKey && !customUrl && providerKey !== 'custom') {
+        addMessage("API Key가 설정되지 않았습니다.", 'bot');
+        return;
+    }
+
+    addMessage(question, 'user');
+    els.userInput.value = '';
+    els.userInput.style.height = 'auto';
+    const loadingDiv = addMessage("Thinking...", 'bot');
+
+    try {
+        let answer = "";
+        let response, data;
+
+        // --- A. Google Gemini ---
+        if (providerKey === 'google') {
+            const url = `${PROVIDERS.google.endpoint}/${modelName}:generateContent?key=${apiKey}`;
+            response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: `[System Instructions]\n${systemContext}\n\n[User Question]\n${question}` }] }],
+                    generationConfig: { maxOutputTokens: maxTokens }
+                })
+            });
+            data = await response.json();
+            if (data.error) throw new Error(data.error.message);
+            answer = data.candidates?.[0]?.content?.parts?.[0]?.text || "응답 없음";
+        }
+        
+        // --- B. Anthropic (Claude) ---
+        else if (providerKey === 'anthropic') {
+            // 주의: 브라우저에서 직접 호출 시 CORS 문제가 발생할 수 있습니다 (Proxy 필요 가능성 높음)
+            response = await fetch(PROVIDERS.anthropic.endpoint + "/messages", {
+                method: 'POST',
+                headers: {
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01',
+                    'content-type': 'application/json',
+                    'dangerously-allow-browser': 'true' // 데모용 (실제로는 서버 프록시 권장)
+                },
+                body: JSON.stringify({
+                    model: modelName,
+                    max_tokens: maxTokens,
+                    system: "당신은 SillyTavern 전문가입니다. 다음 정보를 참조하여 답변하세요:\n" + systemContext,
+                    messages: [{ role: "user", content: question }]
+                })
+            });
+            data = await response.json();
+            if (data.error) throw new Error(data.error.message);
+            answer = data.content?.[0]?.text || "응답 없음";
+        }
+
+        // --- C. Cohere ---
+        else if (providerKey === 'cohere') {
+             response = await fetch(PROVIDERS.cohere.endpoint + "/chat", {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json',
+                    'X-Client-Name': 'SillyTavern-Wiki'
+                },
+                body: JSON.stringify({
+                    model: modelName,
+                    message: question,
+                    preamble: "당신은 SillyTavern 전문가입니다. 다음 정보를 참조하여 답변하세요:\n" + systemContext,
+                    max_tokens: maxTokens
+                })
+            });
+            data = await response.json();
+            if (data.message) throw new Error(data.message); // 에러 필드
+            answer = data.text || "응답 없음";
+        }
+
+        // --- D. OpenAI & Custom (OpenAI Compatible) ---
+        else {
+            let baseUrl = (providerKey === 'custom' && customUrl) ? customUrl : PROVIDERS.openai.endpoint;
+            if (!baseUrl.endsWith('/chat/completions')) {
+                baseUrl = baseUrl.replace(/\/+$/, '') + '/chat/completions';
+            }
+
+            const headers = { 'Content-Type': 'application/json' };
+            if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+
+            response = await fetch(baseUrl, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    model: modelName,
+                    messages: [
+                        { role: "system", content: "당신은 SillyTavern 전문가입니다. 마크다운으로 답변하세요.\n\n" + systemContext },
+                        { role: "user", content: question }
+                    ],
+                    max_tokens: maxTokens,
+                    temperature: 0.5
+                })
+            });
+            data = await response.json();
+            if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+            answer = data.choices?.[0]?.message?.content || "응답 없음";
+        }
+
+        loadingDiv.remove();
+        addMessage(answer, 'bot');
+
+    } catch (error) {
+        loadingDiv.innerHTML = `<span style="color:tomato">오류 발생: ${error.message}</span><br><small>CORS 오류인 경우 브라우저 보안 정책 때문일 수 있습니다. (특히 Anthropic/Cohere)</small>`;
+        console.error(error);
+    }
+}
+
+// --- 8. 기타 이벤트 및 헬퍼 ---
+// 설정 토글
+if(els.settingsToggle) {
+    els.settingsToggle.addEventListener('click', () => els.settingsWrapper.classList.toggle('collapsed'));
+}
+
+// 창 제어
+els.toggleBtn.addEventListener('click', () => { els.container.classList.remove('hidden'); setTimeout(() => els.userInput.focus(), 100); });
+els.closeBtn.addEventListener('click', () => els.container.classList.add('hidden'));
+els.expandBtn.addEventListener('click', () => { els.container.classList.toggle('expanded'); els.expandBtn.innerText = els.container.classList.contains('expanded') ? '-' : '+'; });
+els.saveKeyBtn.addEventListener('click', () => { localStorage.setItem('ai_api_key', els.apiKeyInput.value.trim()); alert('저장되었습니다.'); });
+els.tokenSlider.addEventListener('input', function() { els.tokenValue.innerText = this.value; localStorage.setItem('ai_token_limit', this.value); });
+
+els.userInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+els.sendBtn.addEventListener('click', sendMessage);
+
+// 메시지 UI 추가 함수
+function addMessage(text, sender) {
+    const div = document.createElement('div');
+    div.classList.add('ai-message', sender);
+    
+    let contentHtml = '';
+    if(sender === 'bot') {
+        if (typeof marked !== 'undefined') {
+            try { contentHtml = marked.parse(text); } 
+            catch(e) { contentHtml = text.replace(/\n/g, '<br>'); }
+        } else { contentHtml = text.replace(/\n/g, '<br>'); }
+        div.innerHTML = `<div class="markdown-body">${contentHtml}</div>`;
+    } else {
+        div.textContent = text;
+    }
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'msg-copy-btn';
+    copyBtn.innerText = '📋';
+    copyBtn.onclick = () => {
+        navigator.clipboard.writeText(text).then(() => {
+            copyBtn.innerText = '✔️';
+            setTimeout(() => copyBtn.innerText = '📋', 1500);
         });
+    };
+    div.appendChild(copyBtn);
+    els.chatLog.appendChild(div);
+    els.chatLog.scrollTop = els.chatLog.scrollHeight;
+    return div;
+}
+
+window.copyCode = function(btn) {
+    const codeBlock = btn.nextElementSibling.querySelector('code');
+    navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+        const originalText = btn.innerText; btn.innerText = 'Copied!';
+        setTimeout(() => btn.innerText = originalText, 1500);
+    });
+};
+
+// 앱 초기화 실행
+initUI();
+/* --- AI 어시스턴트 기능 끝 --- */
+        });
+    // 기초 문법 가이드 토글 함수
+    function toggleGuide() {
+        const guideBox = document.getElementById('syntaxGuide');
+        guideBox.classList.toggle('open');
+        
+        // 아이콘 변경 (선택 사항)
+        const icon = guideBox.querySelector('.guide-toggle-icon');
+        if (guideBox.classList.contains('open')) {
+            icon.textContent = '▲';
+        } else {
+            icon.textContent = '▼';
+        }
+    }
     </script>
+
+<button id="ai-chat-toggle" class="ai-chat-btn">🤖 AI 질문하기</button>
+
+<div id="ai-chat-container" class="ai-chat-container hidden">
+    <div class="ai-chat-header">
+        <span class="header-title">실리태번 도우미</span>
+        <div class="header-controls">
+            <button id="ai-settings-toggle" class="ai-control-btn" title="설정 접기/펼치기">⚙️</button>
+            <button id="ai-expand-btn" class="ai-control-btn" title="창 확대/축소">+</button>
+            <button id="ai-chat-close" class="ai-control-btn" title="닫기">×</button>
+        </div>
+    </div>
+    
+    <div id="ai-settings-wrapper" class="ai-settings-wrapper">
+        <div class="ai-row">
+            <input type="password" id="ai-api-key" placeholder="API Key (OpenAI/Gemini/Custom)" class="ai-input">
+            <button id="ai-save-key-btn" class="ai-btn-small">저장</button>
+        </div>
+
+        <div class="ai-row">
+            <select id="ai-model-select" class="ai-select" style="flex:1;">
+                <optgroup label="OpenAI">
+                    <option value="gpt-4o-mini">GPT-4o-mini</option>
+                    <option value="gpt-4o">GPT-4o</option>
+                </optgroup>
+                <optgroup label="Google Gemini">
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                <option value="gemini-3-pro-preview">Gemini 3 Pro Preview</option>
+                </optgroup>
+                <optgroup label="Custom Models" id="ai-custom-models-group">
+                    </optgroup>
+            </select>
+            <button id="ai-delete-model-btn" class="ai-btn-small hidden" style="background-color: #ff6b6b;" title="선택한 커스텀 모델 삭제">🗑️</button>
+        </div>
+        
+        <div class="ai-column hidden" id="custom-model-row" style="margin-top:5px; background: rgba(0,0,0,0.03); padding:8px; border-radius:4px;">
+             <div style="margin-bottom:5px; font-weight:bold; font-size:0.8em;">커스텀 모델 추가</div>
+             <input type="text" id="ai-custom-model-name" placeholder="모델명 (예: my-local-model)" class="ai-input" style="width:100%; margin-bottom:5px;">
+             <input type="text" id="ai-custom-endpoint" placeholder="공급자 URL (비워두면 OpenAI 기본값)" class="ai-input" style="width:100%; margin-bottom:5px;">
+             <div style="font-size:0.75em; color:#666; margin-bottom:5px;">* URL 예시: http://localhost:1234/v1</div>
+             <button id="ai-add-model-btn" class="ai-btn-small" style="width:100%;">이 모델 추가하기</button>
+        </div>
+        <div style="text-align:right; margin-bottom:5px;">
+            <a href="#" id="toggle-custom-model" style="font-size:0.8em; color:var(--primary-color);">+ 커스텀 모델/공급자 설정</a>
+        </div>
+
+        <div class="ai-slider-container">
+            <label for="ai-token-slider">토큰 제한: <span id="ai-token-value">1000</span></label>
+            <input type="range" id="ai-token-slider" min="100" max="50000" step="100" value="1000" class="ai-slider">
+        </div>
+    </div>
+
+    <div id="ai-chat-log" class="ai-chat-log">
+        <div class="ai-message bot">
+            <div class="markdown-body">
+                안녕하세요! <strong>설정 접기</strong>와 <strong>모델 삭제</strong> 기능이 추가되었습니다.<br>
+                궁금한 점을 물어보세요.
+            </div>
+        </div>
+    </div>
+
+    <div class="ai-input-area">
+        <textarea id="ai-user-input" placeholder="질문을 입력하세요... (Shift+Enter 줄바꿈)" class="ai-input-text" rows="1"></textarea>
+        <button id="ai-send-btn" class="ai-send-btn">전송</button>
+    </div>
+</div>
 </body>
 </html>
