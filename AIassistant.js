@@ -772,8 +772,8 @@ function initAiSystem(getWikiContextCallback) {
 
             addMessageUI(greeting, 'bot');
         } else {
-            session.messages.forEach(m => {
-                addMessageUI(m.content, m.role, false, m.swipes, m.swipeIndex);
+            session.messages.forEach((m, i) => {
+                addMessageUI(m.content, m.role, false, m.swipes, m.swipeIndex, i);
             });
         }
     }
