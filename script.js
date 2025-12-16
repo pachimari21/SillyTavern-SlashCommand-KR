@@ -181,55 +181,81 @@ function renderMacros(macros) {
 // -------------------------------------------------------
 // 2-3. 퀵 리플라이 렌더링 (복잡한 구조 처리)
 // -------------------------------------------------------
+// script.js 내부 renderQuickReplies 함수 수정
+
 function renderQuickReplies(qrs) {
     const container = document.getElementById('qr-list-container');
     if (!container) return;
     container.innerHTML = '';
 
+    // [헬퍼 함수] 이미지 HTML 생성기 (중복 코드 방지)
+    const makeImageTag = (url, alt) => {
+        if (!url) return '';
+        // 이전에 추가한 CSS 클래스(guide-image-wrapper) 활용
+        return `<div class="guide-image-wrapper"><img src="${url}" alt="${alt || 'image'}" class="guide-img" onclick="window.open(this.src, '_blank')"></div>`;
+    };
+
     qrs.forEach(qr => {
         let contentHTML = '';
 
-        // content 배열을 순회하며 타입별로 HTML 생성
         if (qr.content && Array.isArray(qr.content)) {
             contentHTML = qr.content.map(block => {
+                
+                // 1. HTML 타입 (일반 텍스트 설명)
                 if (block.type === 'html') {
-                    return `<div class="help-content" style="border:none; padding:0; background:transparent;">${block.value}</div>`;
+                    const imgHTML = makeImageTag(block.image, '설명 이미지');
+                    // 텍스트 아래에 이미지 추가
+                    return `<div class="help-content" style="border:none; padding:0; background:transparent;">
+                                ${block.value}
+                                ${imgHTML} 
+                            </div>`;
                 } 
+                
+                // 2. Grid 타입 (기존과 동일 + 개별 아이템 이미지)
                 else if (block.type === 'grid') {
                     const gridItems = block.items.map(i => `
                         <div class="guide-item" ${i.fullWidth ? 'style="grid-column: 1 / -1;"' : ''}>
                             <span class="guide-term">${i.term}</span>
-                            <p class="guide-desc">${i.desc}</p>
+                            ${makeImageTag(i.image, i.term)} <p class="guide-desc">${i.desc}</p>
                             ${i.ex ? `<span class="guide-ex">${i.ex}</span>` : ''}
                         </div>
                     `).join('');
-                    return `<div class="guide-grid">${gridItems}</div>`;
+                    
+                    // 그리드 블록 자체에 대한 큰 이미지가 필요하다면?
+                    const blockImgHTML = makeImageTag(block.image, '그리드 전체 이미지');
+                    
+                    return `${blockImgHTML}<div class="guide-grid">${gridItems}</div>`;
                 }
-                else if (block.type === 'header') {
-                    return `<div class="subcategory-header">${block.value}</div>`;
-                }
-                else if (block.type === 'command') { // 라이브러리 등 명령어 스타일
+                
+                // 3. Command 타입 (명령어 예시)
+                else if (block.type === 'command') {
+                    const imgHTML = makeImageTag(block.image, block.name);
                     return `
                         <div class="item">
                             <div class="command-name"><span class="monospace">${block.name}</span></div>
                             <div class="help-content">
                                 ${block.description}
-                                ${block.example ? `<div class="example">${block.example}</div>` : ''}
+                                ${imgHTML} ${block.example ? `<div class="example">${block.example}</div>` : ''}
                             </div>
                         </div>
                     `;
                 }
+                
+                // 4. Header 타입
+                else if (block.type === 'header') {
+                    return `<div class="subcategory-header">${block.value}</div>`;
+                }
             }).join('');
         }
 
-        // 가이드 박스 조립
+        // ... (아래 박스 조립 코드는 기존과 동일) ...
         const boxHTML = `
             <div class="guide-box ${qr.isOpen ? 'open' : ''}" data-qr-category="${qr.category}">
                 <div class="guide-header" onclick="toggleGuide(this)">
                     <h3 class="guide-title">${qr.title}</h3>
                     <span class="guide-toggle-icon">${qr.isOpen ? '▲' : '▼'}</span>
                 </div>
-                <div class="guide-content-wrapper" ${qr.isOpen ? 'style="max-height: 1000px; padding: 0 20px 20px;"' : ''}>
+                <div class="guide-content-wrapper" ${qr.isOpen ? 'style="max-height: fit-content; padding: 0 20px 20px;"' : ''}>
                     ${contentHTML}
                 </div>
             </div>
